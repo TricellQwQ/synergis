@@ -35,7 +35,7 @@
       `OnPlayerSpawned` срабатывают
 - [x] `ERROR - LoadSpriteTo()... file doesn't exist:` ушла — причиной был незаданный
       `ui_newgame_gfx_banner_fg`
-- [ ] Проверены сохранение и `Continue`
+- [x] Проверены сохранение и `Continue` — при загрузке сейва срабатывают оба хука (`OnWorldInitialized` и `OnPlayerSpawned`)
 
 ### Отложено вместе с возвратом `is_game_mode="1"`
 

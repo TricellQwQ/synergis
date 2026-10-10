@@ -5,6 +5,7 @@ local log = logger("init", "mods/synergis/logs/init.log")
 function OnModPreInit()
 	print("Synergis - OnModPreInit()")
 	log.reset()
+	log.info("boot", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
 end
 
 function OnModInit()
@@ -18,9 +19,9 @@ end
 
 
 function OnWorldInitialized()
-	GamePrint( "OnWorldInitialized() " .. tostring(GameGetFrameNum()) )
+	log.info("boot", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
 end
 
-function OnPlayerSpawned()
-    GamePrint( "OnPlayerSpawned()" )
+function OnMagicNumbersAndWorldSeedInitialized()
+	log.info("world", "seed=" .. StatsGetValue("world_seed"))
 end
