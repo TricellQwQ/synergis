@@ -1,0 +1,9 @@
+<Mod
+    name="Synergis"
+    description="Play against other players in a battle royale mode"
+    ui_newgame_name="Synergis Battle Royale"
+    ui_newgame_description="Fight other players in battle royale mode"
+    ui_newgame_gfx_banner_bg="mods/synergis/files/menu_banner_background.png"
+    is_game_mode="1"
+    >
+</Mod>
