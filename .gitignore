@@ -1,2 +1,3 @@
 /.obsidian
-/logs
+/logs/*
+!/logs/.gitkeep
