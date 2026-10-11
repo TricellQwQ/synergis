@@ -1,3 +1,7 @@
+local version = ModDoesFileExist("mods/synergis/files/version.lua")
+                and dofile_once("mods/synergis/files/version.lua")
+                or "unknown"
+
 function logger(context, path)
     local L = {}
     L.context = context
@@ -39,6 +43,7 @@ function logger(context, path)
         if os and os.date then
             f:write("Start time - " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n")
         end
+        f:write("Synergis version " .. version .. "\n")
         f:write("Modding API version - " .. ModGetAPIVersion() .. "\n")
         if DebugGetIsDevBuild() then
             f:write("Dev build\n")
