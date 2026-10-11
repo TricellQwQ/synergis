@@ -1,11 +1,15 @@
 local logger = dofile_once("mods/synergis/files/lib/log.lua")
 local log = logger("init", "mods/synergis/logs/init.log")
 
+if ModIsEnabled("quant.ew") then
+	ModLuaFileAppend("mods/quant.ew/files/api/extra_modules.lua", "mods/synergis/files/net/module.lua")
+end
+
 
 function OnModPreInit()
 	print("Synergis - OnModPreInit()")
 	log.reset()
-	log.info("boot", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
+	log.info("preinit", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
 end
 
 function OnModInit()
@@ -19,7 +23,7 @@ end
 
 
 function OnWorldInitialized()
-	log.info("boot", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
+	log.info("world", "frame=" .. GameGetFrameNum() .. " time=" .. string.format("%.2f", GameGetRealWorldTimeSinceStarted()))
 end
 
 function OnMagicNumbersAndWorldSeedInitialized()
