@@ -10,7 +10,16 @@ local rpc = ew_api.new_rpc_namespace("synergis")
 rpc.opts_everywhere()
 function rpc.hello()
     local player = ew_api.rpc_player_data()
-    log.info("rpc", string.format("Hello from player %s [%s]", player.name, ctx.rpc_peer_id))
+    if ctx.rpc_peer_id ~= ctx.my_id then
+        log.info("rpc", string.format("Hello from player %s [%s]", player.name, ctx.rpc_peer_id))
+        return
+    end
+    log.debug("rpc", "self hello (ignored)")
+end
+
+local function shared_frame()
+    if ctx.is_host then return tostring(GameGetFrameNum()) end
+    return tostring(ctx.host_frame_num)
 end
 
 local roster = {}
@@ -25,17 +34,18 @@ local function refresh_roster(silent)
         if known == nil then
             roster[peer_id] = {name = p.name, entity = p.entity, dc = p.dc}
             if not silent then
-                log.info("players", string.format("%s [%s] joined, frame=%s", tostring(p.name), peer_id, tostring(ctx.host_frame_num)))
+                log.info("players", string.format("%s [%s] joined, frame=%s", tostring(p.name), peer_id, shared_frame()))
             end
+            rpc.hello()
         else
             known.name = p.name
             known.entity = p.entity
             if p.dc ~= known.dc then
                 known.dc = p.dc
                 if known.dc then
-                    log.info("players", tostring(p.name) .. " disconnected, frame=" .. tostring(ctx.host_frame_num))
+                    log.info("players", tostring(p.name) .. " disconnected, frame=" .. shared_frame())
                 else
-                    log.info("players", tostring(p.name) .. " reconnected, frame=" .. tostring(ctx.host_frame_num))
+                    log.info("players", tostring(p.name) .. " reconnected, frame=" .. shared_frame())
                 end
             end
         end
@@ -43,7 +53,7 @@ local function refresh_roster(silent)
 
     for peer_id, p in pairs(roster) do
         if not seen[peer_id] then
-            log.info("players", string.format("%s [%s] left, frame=%s", p.name, peer_id, tostring(ctx.host_frame_num)))
+            log.info("players", string.format("%s [%s] left, frame=%s", p.name, peer_id, tostring(shared_frame())))
             roster[peer_id] = nil
         end
     end
@@ -69,7 +79,6 @@ local module = {
         log.info("players", player_list)
 
         refresh_roster(true)
-        rpc.hello()
     end,
 
     on_client_spawned = function(peer_id, player_data)
